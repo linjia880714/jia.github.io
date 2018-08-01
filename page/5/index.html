@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Jia&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Jia&#39;s Blog">
+<meta property="og:url" content="http://www.linjia.site/page/5/index.html">
+<meta property="og:site_name" content="Jia&#39;s Blog">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jia&#39;s Blog">
+  
+    <link rel="alternate" href="/atom.xml" title="Jia&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-101268827-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+    
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d21fc853db4e4f89e2ff6c3b89fba31a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Jia&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">生命因思考而变得美好</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">文章</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.linjia.site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Nginx自己签发证书配置https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/12/Nginx自己签发证书配置https/" class="article-date">
+  <time datetime="2017-04-12T07:46:33.000Z" itemprop="datePublished">2017-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/Nginx/">Nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/12/Nginx自己签发证书配置https/">Nginx自己签发证书配置https</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#1生成一个rsa密钥">1.生成一个RSA密钥</a></li>
+<li><a href="#2拷贝一个不需要输入密码的密钥文件">2.拷贝一个不需要输入密码的密钥文件</a></li>
+<li><a href="#3生成一个证书请求">3.生成一个证书请求</a></li>
+<li><a href="#4自己签发证书">4.自己签发证书</a></li>
+<li><a href="#5配置nginx">5.配置Nginx</a></li>
+</ul>
+<!-- tocstop -->
+<h3><span id="1生成一个rsa密钥">1.生成一个RSA密钥</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -des3 -out sleepace.key 1024</span><br></pre></td></tr></table></figure>
+<p>执行时需要输入一个密码，请记住</p>
+<hr>
+<h3><span id="2拷贝一个不需要输入密码的密钥文件">2.拷贝一个不需要输入密码的密钥文件</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -<span class="keyword">in</span> sleepace.key -out sleepace_nopass.key</span><br></pre></td></tr></table></figure>
+<p>执行时需要输入第一步的密码</p>
+<hr>
+<h3><span id="3生成一个证书请求">3.生成一个证书请求</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -key sleepace.key -out sleepace.csr</span><br></pre></td></tr></table></figure>
+<p>需要输入公司的一些信息，如下图所示<br><img src="/2017/04/12/Nginx自己签发证书配置https/03.png"></p>
+<hr>
+<h3><span id="4自己签发证书">4.自己签发证书</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -days 365 -<span class="keyword">in</span> sleepace.csr -signkey sleepace.key -out sleepace.crt</span><br></pre></td></tr></table></figure>
+<p>执行时需要输入第一步的密码</p>
+<h3><span id="5配置nginx">5.配置Nginx</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       443 ssl;</span><br><span class="line">        server_name  www.xxx.com;</span><br><span class="line">        </span><br><span class="line">        ssl on;</span><br><span class="line">        ssl_certificate /root/ssl/sleepace.crt;</span><br><span class="line">        ssl_certificate_key /root/ssl/sleepace_nopass.key;</span><br><span class="line">        # 若ssl_certificate_key使用sleepace_nopass.key，则每次启动Nginx服务器都要求输入key的密码。</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_pass http://127.0.0.1:9080;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/12/Nginx自己签发证书配置https/" data-id="cjjzcjjzk002504qu6q479xp3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Nginx开启ssi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/12/Nginx开启ssi/" class="article-date">
+  <time datetime="2017-04-12T07:33:05.000Z" itemprop="datePublished">2017-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/Nginx/">Nginx</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/12/Nginx开启ssi/">Nginx开启ssi</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ssi</td>
+<td>off</td>
+<td>开关：on开，off关</td>
+</tr>
+<tr>
+<td>ssi_silent_errors</td>
+<td>off</td>
+<td>开启后在处理SSI文件出错时不输出错误提示:<br>”[an error occurred while processing the directive]</td>
+</tr>
+<tr>
+<td>ssi_types</td>
+<td>text/html</td>
+<td>启用ssi的格式</td>
+</tr>
+</tbody>
+</table>
+<p>ssi，ssi_silent_errors和ssi_types，可以放在http,server和location的作用域下</p>
+<p>详情请看 <a href="http://nginx.org/en/docs/http/ngx_http_ssi_module.html" target="_blank" rel="noopener">ngx_http_ssi_module</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       83;</span><br><span class="line">        location / &#123;</span><br><span class="line">                 ssi on;</span><br><span class="line">                 ssi_silent_errors on;</span><br><span class="line">                 root   &quot;D:\workspace\project\Link\xproject-html&quot;;</span><br><span class="line">         expires 0;</span><br><span class="line">        &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/12/Nginx开启ssi/" data-id="cjjzcjjzh002204qumgv8uim0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mysql问题及解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/12/Mysql问题及解决/" class="article-date">
+  <time datetime="2017-04-12T07:25:20.000Z" itemprop="datePublished">2017-04-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/DB/">DB</a>►<a class="article-category-link" href="/categories/IT/DB/Mysql/">Mysql</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/12/Mysql问题及解决/">Mysql问题及解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#load-data-发生错误lost-connection-to-mysql-server-during-query">LOAD DATA 发生错误：Lost connection to MySQL server during query</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h3><span id="load-data-发生错误lost-connection-to-mysql-server-during-query">LOAD DATA 发生错误：Lost connection to MySQL server during query</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 看下max_allowed_packet的大小</span></span><br><span class="line">show VARIABLES like <span class="string">'%max_allowed_packet%'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置max_allowed_packet=20M</span></span><br><span class="line"><span class="built_in">set</span> global max_allowed_packet = 50*1024*1024*10;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/12/Mysql问题及解决/" data-id="cjjzcjjzc001w04qucybk855n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mysql/">Mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-日本东京20170402-20170409" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/日本东京20170402-20170409/" class="article-date">
+  <time datetime="2017-04-10T07:00:22.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/旅游/">旅游</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/10/日本东京20170402-20170409/">[ 日本 ] [ 东京镰仓伊东河口湖 ] [ 20170402~20170409 ] </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#day1-浅草上野">Day1 - 浅草上野</a></li>
+<li><a href="#day2-迪士尼海洋">Day2 - 迪士尼海洋</a></li>
+<li><a href="#day3-江之岛镰仓">Day3 - 江之岛镰仓</a></li>
+<li><a href="#day4-伊东温泉">Day4 - 伊东温泉</a></li>
+<li><a href="#day5-河口湖">Day5 - 河口湖</a></li>
+<li><a href="#day6-河口湖忍野八海">Day6 - 河口湖忍野八海</a></li>
+<li><a href="#day7-筑地市场">Day7 - 筑地市场</a></li>
+<li><a href="#day8-回深圳">Day8 - 回深圳</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+<!-- tocstop -->
+<p>第一次去日本，日本这个国家和中国还是很大的差别，清明请3天假，加上两个周末，一共8天</p>
+<h3><span id="day1-浅草上野">Day1 - 浅草上野</span></h3><p>凌晨1：50的飞机，预定了”奔奔跨境车”，直接从科兴拉我们到香港机场，超级方便。飞3个半小时到底日本，大概也就6点多，日本比中国快一个小时</p>
+<p>第一站浅草寺庙，看人人人人人</p>
+<p>第二站上野公园，看人人人人人</p>
+<p>瞎折腾的一天，都是在看人，晚上回到新宿的酒店。7百多的酒店，小到住得压抑。</p>
+<p>晚上歌舞伎町，黄金街闲逛<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_0972_副本.jpg" alt=""></p>
+<h3><span id="day2-迪士尼海洋">Day2 - 迪士尼海洋</span></h3><p>全世界唯一的迪士尼sea就在东京，怎能不去逛逛。</p>
+<p>在淘宝买了票，很奇怪的是票到入园的前一天才发。本来就很担心靠不靠谱，结果果然很不靠谱，原因就不说了，最后拿不到票，特别批评下”小脚丫旅行网 “。花了原价现场买票</p>
+<p>去之前找了些攻略，怎么玩才比较有效率。没用！！人太多（刚好日本学生放春假）！！排队3小时劲爽4分钟，一个早上排了一个，fastPass两个小时才能拿一个，等到能拿下一个的时候已经拿完，欲哭无泪。</p>
+<p>所以对于迪士尼sea的感觉就是，还不如去land，去land还不如去香港的迪士尼</p>
+<h3><span id="day3-江之岛镰仓">Day3 - 江之岛镰仓</span></h3><p>新宿区镰仓非常方便，在新宿的小田急买周游卷。</p>
+<p><img src="/2017/04/10/日本东京20170402-20170409/IMG_1002_副本.jpg" alt=""><br>江之岛上面的虾饼，看着一只新鲜的虾被压成这样子，感觉好邪恶啊</p>
+<p>晚上会新宿的回憶橫丁（思い出横丁）吃串串，店都很小，味道不错</p>
+<h3><span id="day4-伊东温泉">Day4 - 伊东温泉</span></h3><p>去伊东也是小田急到小田原，再转JR</p>
+<p>露天温泉是要裸体的…</p>
+<p><img src="/2017/04/10/日本东京20170402-20170409/IMG_1146_副本.jpg" alt=""><br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1116_副本.jpg" alt=""></p>
+<p>温泉酒店包的晚餐，从前菜开始，汤，主食，到甜点，每份看着很小，数量挺多，吃得超饱，历时两个半小时。甜点有金箔哦！！第一次吃金子，豪嗨心<br><img src="/2017/04/10/日本东京20170402-20170409/food.jpg" alt=""></p>
+<h3><span id="day5-河口湖">Day5 - 河口湖</span></h3><p>早上从伊东出发去河口湖，电车转巴士，也挺累的</p>
+<p>晚上去闲逛了下，7点路上就没人…</p>
+<h3><span id="day6-河口湖忍野八海">Day6 - 河口湖忍野八海</span></h3><p>早早起床，原计划是要搭乘8：45的车去五合目，没想到天气不好，巴士不开，登不了富士山了</p>
+<p>去不了五合目，那就转战忍野八海，就是一个宁静的小村庄，买了些手信</p>
+<p>中午的时候终于看到富士山了<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1194_副本.jpg" alt=""></p>
+<p>下午去和河口湖公园随便晃晃</p>
+<p>晚上搭乘2个小时的巴士去东京站，酒店checkin，以为第一个酒店就够小了，没想到这个更小，人形町附近</p>
+<h3><span id="day7-筑地市场">Day7 - 筑地市场</span></h3><p>早上5点半起床赶往筑地，这天是整个行程最爽的一天，就是吃吃吃</p>
+<p>网上很多攻略提及的大和，寿司大，直接不去，排满了人，看排队人潮少于两个小时是吃不上的</p>
+<p>吃了一些烤串和螃蟹。选了一家叫寿司清的，很不错<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1208_副本.jpg" alt=""><br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1205_副本.jpg" alt=""><br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1207_副本.jpg" alt=""></p>
+<p>随便一家小店的买的生蚝，超好吃。岩手县的<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1210_副本.jpg" alt=""></p>
+<p>中午三鹰吉卜力工作室</p>
+<p>下午秋叶原银座，买买买。当然是其他人买买买，我是没需求的</p>
+<p>晚上奢侈了一把，和牛。宵夜烤串<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1220_副本.jpg" alt=""></p>
+<h3><span id="day8-回深圳">Day8 - 回深圳</span></h3><p>早上10点从酒店出发，晚上11点回到家门</p>
+<h3><span id="总结">总结</span></h3><p>迪士尼sea没什么，还不如去香港</p>
+<p>上野的樱花还不如随便一个小巷的樱花</p>
+<p>711超方便，牛奶是每天必买，早餐就一个饭团。杯面和中国的不一样不一样。每天最大的惊喜就是去711买个不知道什么鬼的东西<br><img src="/2017/04/10/日本东京20170402-20170409/711.jpg" alt=""><br><img src="/2017/04/10/日本东京20170402-20170409/WechatIMG1.jpeg" alt="泡面真的有虾哦"></p>
+<p>日本道路超干净,单车和出租车都是闪闪发亮的</p>
+<p>日本人从小就不怕冷，要知道外面10来度，风也挺大的<br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1193_副本.jpg" alt=""><br><img src="/2017/04/10/日本东京20170402-20170409/IMG_1215_副本.jpg" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/10/日本东京20170402-20170409/" data-id="cjjzcjk1n004x04qu4h43n1cw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/旅游/">旅游</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-教父" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/10/教父/" class="article-date">
+  <time datetime="2017-04-10T01:45:56.000Z" itemprop="datePublished">2017-04-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/读书/">读书</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/10/教父/">教父</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2017/04/10/教父/s3303695.jpg" alt=""></p>
+<p><em>开始：2017-04-10</em><br><em>结束：</em></p>
+<p>“友谊就是一切。比天赋更重要，比政府更重要。和家人差不多同样重要” 唐.柯里昂</p>
+<p>“知道极地探险家在通往北极的路上要沿途存放口粮，防止日后某天会需要食物吗？那就是我父亲的人情。他迟早会找上门，而他们最好按他说的做” 迈克尔.柯里昂</p>
+<p>我最常说的一句话是”不是什么人都可以得到我的友谊”，所以我认可的朋友真的很少，很多时候不是别人不够出色，而是自己把自己锁起来了，不愿去深入接触别人。我大概就是这样子的吧，和我相处很容易，但是能够深入我内心的寥寥无几。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/10/教父/" data-id="cjjzcjk1l004s04quu713gx45" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书/">读书</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-创建cocoapod项目" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/01/创建cocoapod项目/" class="article-date">
+  <time datetime="2017-04-01T09:25:25.000Z" itemprop="datePublished">2017-04-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/IOS/">IOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/01/创建cocoapod项目/">创建cocoapod项目</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#安装-cocoapods">安装 cocoapods</a></li>
+<li><a href="#使用-pod">使用 pod</a></li>
+</ul>
+<!-- tocstop -->
+<h3><span id="安装-cocoapods">安装 cocoapods</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gem install cocoapods</span><br></pre></td></tr></table></figure>
+<p>在中国有可能source不可用，所以更要gem的source，参考<a href="https://gems.ruby-china.org/" target="_blank" rel="noopener">https://gems.ruby-china.org/</a></p>
+<h3><span id="使用-pod">使用 pod</span></h3><ul>
+<li>进入到项目的路径</li>
+<li><p>初始化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑Podfile文件<br>添加 “pod ‘AFNetworking’, ‘~&gt; 2.5’”<br><img src="/2017/04/01/创建cocoapod项目/pod.png" alt=""></p>
+</li>
+<li><p>安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>AFNetworking框架就安装上了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/01/创建cocoapod项目/" data-id="cjjzcjk17004404qu7r9bibev" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOS/">IOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UITableView" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/01/UITableView/" class="article-date">
+  <time datetime="2017-04-01T09:18:43.000Z" itemprop="datePublished">2017-04-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/IOS/">IOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/01/UITableView/">UITableView</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#默认uitableviewcell的样式">默认UITableViewCell的样式</a></li>
+<li><a href="#下拉刷新">下拉刷新</a></li>
+<li><a href="#不允许点击">不允许点击</a></li>
+<li><a href="#滚动至某一行">滚动至某一行</a></li>
+<li><a href="#table-view-data-source">Table view data source</a></li>
+</ul>
+<!-- tocstop -->
+<h3><span id="默认uitableviewcell的样式">默认UITableViewCell的样式</span></h3><p><img src="/2017/04/01/UITableView/image.png" alt=""></p>
+<h3><span id="下拉刷新">下拉刷新</span></h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIRefreshControl</span> *refresh = [[<span class="built_in">UIRefreshControl</span> alloc]init];</span><br><span class="line">refresh.attributedTitle = [[<span class="built_in">NSAttributedString</span> alloc]initWithString:<span class="string">@"刷新"</span>];</span><br><span class="line">[refresh addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(refreshAction) forControlEvents:<span class="built_in">UIControlEventValueChanged</span>];</span><br><span class="line"><span class="keyword">self</span>.refreshControl = refresh;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)refreshAction</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.refreshControl.isRefreshing)&#123;</span><br><span class="line">        <span class="keyword">self</span>.refreshControl.attributedTitle = [[<span class="built_in">NSAttributedString</span> alloc]initWithString:<span class="string">@"加载中..."</span>];</span><br><span class="line">        <span class="comment">// do something you need</span></span><br><span class="line">        [<span class="keyword">self</span>.refreshControl endRefreshing];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="不允许点击">不允许点击</span></h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tableView.allowsSelection=<span class="literal">NO</span>;</span><br></pre></td></tr></table></figure>
+<h3><span id="滚动至某一行">滚动至某一行</span></h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[tableView scrollToRowAtIndexPath:indexPath atScrollPosition:<span class="built_in">UITableViewScrollPositionBottom</span> animated:<span class="literal">YES</span>];</span><br></pre></td></tr></table></figure>
+<h3><span id="table-view-data-source">Table view data source</span></h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSInteger</span>)numberOfSectionsInTableView:(<span class="built_in">UITableView</span> *)tableView &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSInteger</span>)tableView:(<span class="built_in">UITableView</span> *)tableView numberOfRowsInSection:(<span class="built_in">NSInteger</span>)section &#123;</span><br><span class="line">    <span class="keyword">return</span> tableViewData.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UITableViewCell</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView cellForRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath &#123;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">NSString</span> *iden = <span class="string">@"xxxxx"</span>;</span><br><span class="line">    <span class="built_in">UITableViewCell</span> *cell = [<span class="keyword">self</span>.tableView dequeueReusableCellWithIdentifier:iden];</span><br><span class="line">    <span class="keyword">if</span> (cell==<span class="literal">nil</span>) &#123;</span><br><span class="line">        cell=[[<span class="built_in">UITableViewCell</span> alloc] initWithStyle:<span class="built_in">UITableViewCellStyleDefault</span> reuseIdentifier:iden];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> cell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/04/01/UITableView/" data-id="cjjzcjk0e003004qu721zzwal" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOS/">IOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2-Hexo发布到Github-page" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/31/2-Hexo发布到Github-page/" class="article-date">
+  <time datetime="2017-03-31T06:16:29.000Z" itemprop="datePublished">2017-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/Hexo/">Hexo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/31/2-Hexo发布到Github-page/">2.Hexo发布到Github page</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#1到githubcom申请账号">1.到github.com申请账号</a></li>
+<li><a href="#2创建仓库">2.创建仓库</a></li>
+<li><a href="#3配置hexo">3.配置hexo</a></li>
+<li><a href="#4如果需要配置自己的域名">4.如果需要配置自己的域名</a></li>
+</ul>
+<!-- tocstop -->
+<h2><span id="1到githubcom申请账号">1.到github.com申请账号</span></h2><h2><span id="2创建仓库">2.创建仓库</span></h2><p><img src="/2017/03/31/2-Hexo发布到Github-page/576928CC-5ED1-49A1-9B07-349B055E11E8.png" alt=""><br>仓库名有要求的，必须是 &lt;用户名&gt;.github.io</p>
+<h2><span id="3配置hexo">3.配置hexo</span></h2><ul>
+<li><p>安装hexo-deployer-git插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改_config.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repo:</span> <span class="string">git@github.com:linjia880714/linjia880714.github.io.git</span></span><br></pre></td></tr></table></figure>
+<p>github最好配置成ssh验证，省去了输入用户名和密码的步骤</p>
+<font color="red">配置type: git的时候，第一次配置时冒号和git之间少了个空格，不管如何操作配置都不生效，还是要严格的遵循语法</font></li>
+<li><p>发布</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+<p>到这里已经可以使用http://&lt;用户名&gt;.github.io访问了</p>
+</li>
+</ul>
+<h2><span id="4如果需要配置自己的域名">4.如果需要配置自己的域名</span></h2><p><img src="/2017/03/31/2-Hexo发布到Github-page/99B81979-09EE-434C-A674-45DD82BDF655.png" alt=""><br>在source目录下创建一个CNAME的文件，注意没有后缀，编辑文件写上自己的域名。然后再发布到github上</p>
+<p>到自己的域名申请商那里解析你的域名，添加canme指定到”&lt;用户名&gt;.github.io.”</p>
+<p>我的是阿里云<br><img src="/2017/03/31/2-Hexo发布到Github-page/F82D2CC7-CF0E-4375-B90E-4A271D165B76.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/03/31/2-Hexo发布到Github-page/" data-id="cjjzcjjwk000204quou7qlgae" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-1-Hexo国际化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/31/1-Hexo国际化/" class="article-date">
+  <time datetime="2017-03-31T06:03:26.000Z" itemprop="datePublished">2017-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/Hexo/">Hexo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/31/1-Hexo国际化/">1.Hexo国际化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>修改_config.yml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-CN</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2017/03/31/1-Hexo国际化/D959544E-A13D-4742-8955-A8F60344E043.png" alt=""></p>
+<p>例如设置为zh-CN,Hexo就会使用到themes/landscape/languages/zh-CN.yml文件</p>
+<p>zh-CN.yml内容如下，只要修改相应的值就好了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">categories: 分类</span><br><span class="line">search: 搜索</span><br><span class="line">tags: 标签</span><br><span class="line">tagcloud: 标签云</span><br><span class="line">tweets: 推文</span><br><span class="line">prev: 上一页</span><br><span class="line">next: 下一页</span><br><span class="line">comment: 留言</span><br><span class="line">archive_a: 归档</span><br><span class="line">archive_b: 归档：%s</span><br><span class="line">page: 第 %d 页</span><br><span class="line">recent_posts: 最新文章</span><br><span class="line">newer: 上一篇</span><br><span class="line">older: 下一篇</span><br><span class="line">share: Share</span><br><span class="line">powered_by: Powered by</span><br><span class="line">rss_feed: RSS Feed</span><br><span class="line">category: Category</span><br><span class="line">tag: Tag</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/03/31/1-Hexo国际化/" data-id="cjjzcjjwc000104quc8yypzxa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Maven-pom实用配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/30/Maven-pom实用配置/" class="article-date">
+  <time datetime="2017-03-30T12:04:54.000Z" itemprop="datePublished">2017-03-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/IT/">IT</a>►<a class="article-category-link" href="/categories/IT/java/">java</a>►<a class="article-category-link" href="/categories/IT/java/maven/">maven</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/30/Maven-pom实用配置/">Maven pom实用配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- toc -->
+<ul>
+<li><a href="#不要发布">不要发布</a></li>
+<li><a href="#获取svn版本号">获取svn版本号</a></li>
+<li><a href="#把source一起发布">把source一起发布</a></li>
+<li><a href="#打成jar包并制定main方法">打成jar包，并制定main方法</a></li>
+<li><a href="#把jar安装到本地">把jar安装到本地</a></li>
+<li><a href="#mvn-dependencytree">mvn dependency:tree</a></li>
+</ul>
+<!-- tocstop -->
+<h3><span id="不要发布">不要发布</span></h3><p>当项目是很多的模块，有些模块（例如打成war包的模块）不需要deploy<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-deploy-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">skip</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skip</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3><span id="获取svn版本号">获取svn版本号</span></h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">scm</span>&gt;</span>    </span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>scm:svn:svn://203.195.156.249/services/sleepace-pro-api<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">connection</span>&gt;</span>scm:svn:svn://203.195.156.249/services/sleepace-pro-api<span class="tag">&lt;/<span class="name">connection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">scm</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>sleepace-pro-api-$&#123;buildNumber&#125;<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.codehaus.mojo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>buildnumber-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">goal</span>&gt;</span>create<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">doCheck</span>&gt;</span>false<span class="tag">&lt;/<span class="name">doCheck</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">doUpdate</span>&gt;</span>false<span class="tag">&lt;/<span class="name">doUpdate</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">username</span>&gt;</span>linjia<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">password</span>&gt;</span>linjia<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">items</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">item</span>&gt;</span>scmVersion<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">items</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>scm配置svn得地址<br>username登录名<br>password登录密码</p>
+<h3><span id="把source一起发布">把source一起发布</span></h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-source-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attach</span>&gt;</span>true<span class="tag">&lt;/<span class="name">attach</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3><span id="打成jar包并制定main方法">打成jar包，并制定main方法</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean compile assembly:single</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">configuration</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">appendAssemblyId</span>&gt;</span>false<span class="tag">&lt;/<span class="name">appendAssemblyId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span>   </span><br><span class="line">      <span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">archive</span>&gt;</span>   </span><br><span class="line">      <span class="tag">&lt;<span class="name">manifest</span>&gt;</span>   </span><br><span class="line">        <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.medica.servicenetty.HealthServer<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span>    </span><br><span class="line">      <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">archive</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3><span id="把jar安装到本地">把jar安装到本地</span></h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.ethz.ganymed<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>ganymed-ssh2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>build210<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn install:install-file -Dfile=ganymed-ssh2-build210.jar -DgroupId=ch.ethz.ganymed -DartifactId=ganymed-ssh2 -Dversion=build210 -Dpackaging=jar</span><br></pre></td></tr></table></figure>
+<h3><span id="mvn-dependencytree">mvn dependency:tree</span></h3><p>排查包冲突超好用，列出所有依赖关系<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:tree</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.linjia.site/2017/03/30/Maven-pom实用配置/" data-id="cjjzcjk1g004j04quc4wkkg2z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">__('next') &raquo;</a>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IT/">IT</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/IT/DB/">DB</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/IT/DB/Mysql/">Mysql</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/IOS/">IOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/Nginx/">Nginx</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/java/">java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/IT/java/IDE/">IDE</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/java/maven/">maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/java/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/java/spring/">spring</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/算法/">算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IT/项目/">项目</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/应用/">应用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/旅游/">旅游</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOS/">IOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IT工具/">IT工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linxu/">Linxu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Powerdesigner/">Powerdesigner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Velocity/">Velocity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Word/">Word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ipv6/">ipv6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javamail/">javamail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux-svn-http-https-web-权限管理/">linux,svn,http,https,web,权限管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/冒泡排序/">冒泡排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/插入排序/">插入排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅游/">旅游</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书/">读书</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/选择排序/">选择排序</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/tags/IOS/" style="font-size: 20px;">IOS</a> <a href="/tags/IT工具/" style="font-size: 14px;">IT工具</a> <a href="/tags/Linxu/" style="font-size: 12px;">Linxu</a> <a href="/tags/Mysql/" style="font-size: 12px;">Mysql</a> <a href="/tags/Nginx/" style="font-size: 12px;">Nginx</a> <a href="/tags/Powerdesigner/" style="font-size: 14px;">Powerdesigner</a> <a href="/tags/Velocity/" style="font-size: 10px;">Velocity</a> <a href="/tags/Word/" style="font-size: 10px;">Word</a> <a href="/tags/eclipse/" style="font-size: 12px;">eclipse</a> <a href="/tags/ipv6/" style="font-size: 10px;">ipv6</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/javamail/" style="font-size: 10px;">javamail</a> <a href="/tags/linux-svn-http-https-web-权限管理/" style="font-size: 10px;">linux,svn,http,https,web,权限管理</a> <a href="/tags/springboot/" style="font-size: 18px;">springboot</a> <a href="/tags/冒泡排序/" style="font-size: 10px;">冒泡排序</a> <a href="/tags/插入排序/" style="font-size: 10px;">插入排序</a> <a href="/tags/旅游/" style="font-size: 14px;">旅游</a> <a href="/tags/读书/" style="font-size: 16px;">读书</a> <a href="/tags/选择排序/" style="font-size: 10px;">选择排序</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">十二月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">十月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/05/">五月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/04/">四月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/01/">一月 2011</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/12/">十二月 2010</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/1988/08/">八月 1988</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/01/系列推荐/">系列推荐</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/28/Java-HashTable/">HashTable</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/23/Java-HashMap/">HashMap</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/23/Java-LinkedList/">LinkedList</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/23/Java-Vector/">Vector</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 林佳<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
